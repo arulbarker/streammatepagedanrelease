@@ -4,18 +4,24 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>StreamMate AI - Level Up Your Streaming with AI Power</title>
-    <meta name="description" content="StreamMate AI adalah asisten cerdas yang menjawab komentar, mengingat penonton setia, dan membuat streaming Anda lebih hidup secara otomatis.">
+    <meta name="description" content="StreamMate AI is an intelligent assistant that automatically responds to comments, remembers loyal viewers, and brings your stream to life automatically.">
     <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
     <script>
         tailwind.config = {
             theme: {
                 extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
                     colors: {
                         'cyber-dark': '#0a0b14',
                         'cyber-blue': '#00f5ff',
                         'cyber-purple': '#8b5cf6',
                         'cyber-pink': '#ff10f0',
-                        'cyber-grid': '#1a2332'
+                        'cyber-grid': '#1a2332',
+                        'cyber-green': '#00ff88',
+                        'cyber-orange': '#ff8800'
                     },
                     backgroundImage: {
                         'cyber-gradient': 'linear-gradient(135deg, #00f5ff 0%, #8b5cf6 50%, #ff10f0 100%)',
@@ -23,7 +29,9 @@
                     },
                     animation: {
                         'glow': 'glow 2s ease-in-out infinite alternate',
-                        'float': 'float 3s ease-in-out infinite'
+                        'float': 'float 3s ease-in-out infinite',
+                        'pulse-slow': 'pulse 3s ease-in-out infinite',
+                        'bounce-slow': 'bounce 2s ease-in-out infinite'
                     }
                 }
             }
@@ -54,125 +62,444 @@
         }
         
         .cyber-card {
-            background: linear-gradient(135deg, rgba(20, 25, 40, 0.9) 0%, rgba(10, 11, 20, 0.9) 100%);
+            background: linear-gradient(135deg, rgba(20, 25, 40, 0.95) 0%, rgba(10, 11, 20, 0.95) 100%);
             border: 1px solid rgba(0, 245, 255, 0.2);
-            backdrop-filter: blur(10px);
+            backdrop-filter: blur(15px);
+            transition: all 0.3s ease;
+        }
+        
+        .cyber-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 245, 255, 0.3);
         }
         
         .cyber-button {
             background: linear-gradient(135deg, #00f5ff 0%, #8b5cf6 50%, #ff10f0 100%);
             transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .cyber-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+            transition: left 0.5s ease;
+        }
+        
+        .cyber-button:hover::before {
+            left: 100%;
         }
         
         .cyber-button:hover {
             transform: translateY(-2px);
             box-shadow: 0 0 40px rgba(0, 245, 255, 0.8);
         }
+        
+        .star-rating {
+            color: #ffd700;
+            filter: drop-shadow(0 0 5px rgba(255, 215, 0, 0.5));
+        }
+        
+        .testimonial-card {
+            background: linear-gradient(135deg, rgba(30, 35, 50, 0.95) 0%, rgba(15, 16, 25, 0.95) 100%);
+            border: 1px solid rgba(0, 245, 255, 0.15);
+            backdrop-filter: blur(20px);
+            transition: all 0.4s ease;
+        }
+        
+        .testimonial-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 15px 40px rgba(0, 245, 255, 0.4);
+            border-color: rgba(0, 245, 255, 0.4);
+        }
+        
+        .video-container {
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .video-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, rgba(0, 245, 255, 0.1), rgba(139, 92, 246, 0.1));
+            pointer-events: none;
+            z-index: 1;
+        }
+        
+        .video-container:hover {
+            transform: scale(1.02);
+            box-shadow: 0 0 50px rgba(0, 245, 255, 0.3);
+        }
+        
+        .feature-icon {
+            transition: all 0.3s ease;
+        }
+        
+        .feature-icon:hover {
+            transform: scale(1.1) rotate(5deg);
+        }
+        
+        .hero-particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: rgba(0, 245, 255, 0.6);
+            border-radius: 50%;
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        @keyframes particles {
+            0%, 100% { transform: translateY(0px) translateX(0px); opacity: 0.3; }
+            50% { transform: translateY(-20px) translateX(10px); opacity: 1; }
+        }
     </style>
 </head>
-<body class="bg-gray-900 text-gray-100 min-h-screen grid-bg">
+<body class="bg-cyber-dark text-gray-100 min-h-screen grid-bg font-sans">
+
     <!-- Header -->
-    <header class="border-b border-gray-700/50 backdrop-blur-sm bg-gray-900/80 sticky top-0 z-50">
+    <header class="border-b border-gray-700/50 backdrop-blur-sm bg-cyber-dark/90 sticky top-0 z-50">
         <div class="container mx-auto px-4 py-4">
             <div class="flex items-center justify-center">
-                <h1 class="text-2xl font-bold bg-gradient-to-r from-cyber-blue via-cyber-purple to-cyber-pink bg-clip-text text-transparent cyber-text-glow">
-                    StreamMate AI
+                <h1 class="text-3xl font-bold bg-gradient-to-r from-cyber-blue via-cyber-purple to-cyber-pink bg-clip-text text-transparent cyber-text-glow">
+                    🤖 StreamMate AI
                 </h1>
             </div>
         </div>
     </header>
 
-    <!-- Hero Section -->
-    <section class="relative py-20 lg:py-32 overflow-hidden">
-        <div class="absolute inset-0 bg-gradient-to-br from-cyber-dark via-gray-900 to-cyber-dark opacity-80"></div>
-        <div class="absolute inset-0 bg-gradient-to-r from-cyan-500/10 via-purple-500/10 to-pink-500/10"></div>
-        
-        <div class="relative container mx-auto px-4 text-center">
-            <h1 class="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 bg-gradient-to-r from-cyber-blue via-cyber-purple to-cyber-pink bg-clip-text text-transparent cyber-text-glow">
-                Level Up Your Streaming with AI Power
-            </h1>
+    <main>
+        <!-- Hero Section -->
+        <section class="relative py-20 lg:py-32 overflow-hidden">
+            <div class="absolute inset-0 bg-gradient-to-br from-cyber-dark via-gray-900 to-cyber-dark opacity-90"></div>
+            <div class="absolute inset-0 bg-gradient-to-r from-cyan-500/10 via-purple-500/10 to-pink-500/10"></div>
             
-            <p class="text-lg md:text-xl text-gray-300 max-w-4xl mx-auto mb-8 leading-relaxed">
-                StreamMate AI adalah asisten cerdas yang secara otomatis menjawab komentar, mengingat penonton setia, dan membuat streaming Anda lebih hidup. Fokus pada game Anda, biarkan AI yang mengurus interaksi. Di masa depan, aplikasi ini juga dapat berfungsi sebagai asisten penjualan yang menjawab semua pertanyaan penonton seputar produk Anda.
-            </p>
+            <!-- Animated Background Elements -->
+            <div class="hero-particle" style="top: 20%; left: 10%; animation-delay: 0s;"></div>
+            <div class="hero-particle" style="top: 40%; right: 20%; animation-delay: 2s;"></div>
+            <div class="hero-particle" style="bottom: 30%; left: 30%; animation-delay: 4s;"></div>
+            <div class="hero-particle" style="top: 60%; right: 10%; animation-delay: 1s;"></div>
             
-            <a 
-                href="https://github.com/arulbarker/streammatepagedanrelease/releases/download/v1.0.11/StreamMateAI_v1.0.11_20250625.zip"
-                class="inline-block"
-            >
-                <button class="cyber-button text-lg px-8 py-6 text-gray-900 font-bold rounded-lg border-0 hover:scale-105 transition-all duration-300 animate-float">
-                    Download Gratis untuk Windows (v1.0.11)
-                </button>
-            </a>
-        </div>
-    </section>
-
-    <!-- Features Section -->
-    <section class="py-20 relative">
-        <div class="container mx-auto px-4">
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+            <div class="relative container mx-auto px-4 text-center">
+                <div class="mb-8">
+                    <span class="inline-block bg-gradient-to-r from-cyber-blue to-cyber-purple text-transparent bg-clip-text text-lg font-semibold mb-4">
+                        🚀 The Future of Live Streaming is Here
+                    </span>
+                </div>
                 
-                <!-- Feature 1 -->
-                <div class="cyber-card rounded-lg p-6 hover:border-cyber-blue/50 transition-all duration-300 group">
-                    <div class="text-center pb-4">
-                        <div class="mx-auto mb-4 w-16 h-16 bg-gradient-to-br from-cyber-blue/20 to-cyber-pink/20 rounded-lg flex items-center justify-center group-hover:animate-glow transition-all duration-300">
-                            <svg class="h-8 w-8 text-cyber-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
-                            </svg>
-                        </div>
-                        <h3 class="text-xl font-bold text-gray-100 mb-4">
-                            Balasan Instan
-                        </h3>
+                <h1 class="text-5xl md:text-6xl lg:text-8xl font-bold mb-6 bg-gradient-to-r from-cyber-blue via-cyber-purple to-cyber-pink bg-clip-text text-transparent cyber-text-glow leading-tight">
+                    Level Up Your Streaming with AI Power
+                </h1>
+                
+                <p class="text-xl md:text-2xl text-gray-300 max-w-5xl mx-auto mb-12 leading-relaxed">
+                    StreamMate AI is an intelligent assistant that <span class="text-cyber-blue font-semibold">automatically responds to comments</span>, <span class="text-cyber-purple font-semibold">remembers loyal viewers</span>, and <span class="text-cyber-pink font-semibold">brings your stream to life</span>. Focus on your game, let AI handle the interaction. Perfect for content creators and live commerce streamers.
+                </p>
+                
+                <div class="flex flex-col sm:flex-row gap-4 justify-center items-center mb-8">
+                    <a 
+                        href="https://github.com/arulbarker/streammatepagedanrelease/releases/download/v1.0.11/StreamMateAI_v1.0.11_20250625.zip"
+                        class="inline-block group"
+                    >
+                        <button class="cyber-button text-xl px-10 py-6 text-gray-900 font-bold rounded-lg border-0 hover:scale-105 transition-all duration-300 animate-bounce-slow">
+                            🎮 Download Free for Windows (v1.0.11)
+                        </button>
+                    </a>
+                    
+                    <div class="flex items-center gap-2 text-gray-400">
+                        <svg class="w-5 h-5 text-cyber-green" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                        </svg>
+                        <span>Free </span>
                     </div>
-                    <p class="text-gray-400 text-center">
-                        Jawab pertanyaan umum secara otomatis dengan kecepatan kilat, menjaga chat tetap aktif saat Anda fokus bermain game.
-                    </p>
                 </div>
 
-                <!-- Feature 2 -->
-                <div class="cyber-card rounded-lg p-6 hover:border-cyber-purple/50 transition-all duration-300 group">
-                    <div class="text-center pb-4">
-                        <div class="mx-auto mb-4 w-16 h-16 bg-gradient-to-br from-cyber-purple/20 to-cyber-blue/20 rounded-lg flex items-center justify-center group-hover:animate-glow transition-all duration-300">
-                            <svg class="h-8 w-8 text-cyber-purple" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path>
-                            </svg>
-                        </div>
-                        <h3 class="text-xl font-bold text-gray-100 mb-4">
-                            Memori Penonton
-                        </h3>
+                <div class="flex justify-center items-center gap-8 text-sm text-gray-400 flex-wrap">
+                    <div class="flex items-center gap-2">
+                        <span class="w-2 h-2 bg-cyber-green rounded-full animate-pulse"></span>
+                        <span>1000+ Active Users</span>
                     </div>
-                    <p class="text-gray-400 text-center">
-                        Sapa penonton setia dengan nama mereka dan ingat percakapan sebelumnya, menciptakan pengalaman yang personal untuk komunitas Anda.
-                    </p>
-                </div>
-
-                <!-- Feature 3 -->
-                <div class="cyber-card rounded-lg p-6 hover:border-cyber-pink/50 transition-all duration-300 group">
-                    <div class="text-center pb-4">
-                        <div class="mx-auto mb-4 w-16 h-16 bg-gradient-to-br from-cyber-pink/20 to-cyber-purple/20 rounded-lg flex items-center justify-center group-hover:animate-glow transition-all duration-300">
-                            <svg class="h-8 w-8 text-cyber-pink" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"></path>
-                            </svg>
-                        </div>
-                        <h3 class="text-xl font-bold text-gray-100 mb-4">
-                            Co-host Cerdas
-                        </h3>
+                    <div class="flex items-center gap-2">
+                        <span class="w-2 h-2 bg-cyber-blue rounded-full animate-pulse"></span>
+                        <span>Multi-Platform Support</span>
                     </div>
-                    <p class="text-gray-400 text-center">
-                        Mengobrol dengan AI saat live streaming, menciptakan percakapan dinamis dan konten yang menghibur untuk audience Anda.
-                    </p>
+                    <div class="flex items-center gap-2">
+                        <span class="w-2 h-2 bg-cyber-purple rounded-full animate-pulse"></span>
+                        <span>Real-time AI Responses</span>
+                    </div>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
+
+        <!-- Features Section -->
+        <section class="py-24 relative">
+            <div class="container mx-auto px-4">
+                <div class="text-center mb-16">
+                    <h2 class="text-4xl md:text-5xl font-bold text-gray-100 mb-4 bg-gradient-to-r from-cyber-blue to-cyber-purple bg-clip-text text-transparent">
+                        🎯 Core Features
+                    </h2>
+                    <p class="text-gray-400 text-xl max-w-3xl mx-auto">
+                        Experience the future of live streaming with cutting-edge AI technology
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-7xl mx-auto">
+                    
+                    <!-- Feature 1 -->
+                    <div class="cyber-card rounded-xl p-8 hover:border-cyber-blue/50 transition-all duration-300 group">
+                        <div class="text-center pb-4">
+                            <div class="mx-auto mb-6 w-20 h-20 bg-gradient-to-br from-cyber-blue/20 to-cyber-pink/20 rounded-xl flex items-center justify-center group-hover:animate-glow transition-all duration-300 feature-icon">
+                                <svg class="h-10 w-10 text-cyber-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                                </svg>
+                            </div>
+                            <h3 class="text-2xl font-bold text-gray-100 mb-4">
+                                ⚡ Lightning-Fast Replies
+                            </h3>
+                        </div>
+                        <p class="text-gray-400 text-center text-lg leading-relaxed">
+                            Automatically answer common questions with <span class="text-cyber-blue font-semibold">instant responses</span>, keeping your chat engaged while you focus on creating amazing content.
+                        </p>
+                    </div>
+
+                    <!-- Feature 2 -->
+                    <div class="cyber-card rounded-xl p-8 hover:border-cyber-purple/50 transition-all duration-300 group">
+                        <div class="text-center pb-4">
+                            <div class="mx-auto mb-6 w-20 h-20 bg-gradient-to-br from-cyber-purple/20 to-cyber-blue/20 rounded-xl flex items-center justify-center group-hover:animate-glow transition-all duration-300 feature-icon">
+                                <svg class="h-10 w-10 text-cyber-purple" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path>
+                                </svg>
+                            </div>
+                            <h3 class="text-2xl font-bold text-gray-100 mb-4">
+                                🧠 Smart Viewer Memory
+                            </h3>
+                        </div>
+                        <p class="text-gray-400 text-center text-lg leading-relaxed">
+                            Greet loyal viewers by name and remember <span class="text-cyber-purple font-semibold">previous conversations</span>, creating a personalized experience that builds stronger community bonds.
+                        </p>
+                    </div>
+
+                    <!-- Feature 3 -->
+                    <div class="cyber-card rounded-xl p-8 hover:border-cyber-pink/50 transition-all duration-300 group">
+                        <div class="text-center pb-4">
+                            <div class="mx-auto mb-6 w-20 h-20 bg-gradient-to-br from-cyber-pink/20 to-cyber-purple/20 rounded-xl flex items-center justify-center group-hover:animate-glow transition-all duration-300 feature-icon">
+                                <svg class="h-10 w-10 text-cyber-pink" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"></path>
+                                </svg>
+                            </div>
+                            <h3 class="text-2xl font-bold text-gray-100 mb-4">
+                                🎭 Interactive AI Co-host
+                            </h3>
+                        </div>
+                        <p class="text-gray-400 text-center text-lg leading-relaxed">
+                            Chat with AI during your live stream, creating <span class="text-cyber-pink font-semibold">dynamic conversations</span> and entertaining content that keeps your audience captivated.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Video Tutorial Section -->
+        <section class="py-24 relative bg-cyber-dark/50">
+            <div class="container mx-auto px-4">
+                <div class="text-center mb-16">
+                    <h2 class="text-4xl md:text-5xl font-bold text-gray-100 mb-4 bg-gradient-to-r from-cyber-blue to-cyber-purple bg-clip-text text-transparent">
+                        📹 See StreamMate AI in Action
+                    </h2>
+                    <p class="text-gray-400 text-xl max-w-3xl mx-auto">
+                        Watch how StreamMate AI transforms your streaming experience with intelligent chat management and real-time interaction.
+                    </p>
+                </div>
+                
+                <div class="max-w-5xl mx-auto">
+                    <div class="cyber-card rounded-xl p-2 md:p-4 aspect-video video-container">
+                        <iframe 
+                            class="w-full h-full rounded-lg" 
+                            src="https://www.youtube.com/embed/FIOxXb3uW44" 
+                            title="StreamMate AI Tutorial and Review - Complete Setup Guide" 
+                            frameborder="0" 
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                            allowfullscreen>
+                        </iframe>
+                    </div>
+                    
+                    <div class="text-center mt-8">
+                        <p class="text-gray-400 text-lg mb-4">
+                            🎯 Complete setup guide and real-world demonstration.
+                        </p>
+                        <div class="flex justify-center items-center gap-6 text-sm text-gray-500 flex-wrap">
+                            <span>✅ Installation Tutorial</span>
+                            <span>✅ Feature Walkthrough</span>
+                            <span>✅ Live Demo</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Enhanced Testimonials Section -->
+        <section class="py-24 relative">
+            <div class="container mx-auto px-4">
+                <div class="text-center mb-16">
+                    <h2 class="text-4xl md:text-5xl font-bold text-gray-100 mb-4 bg-gradient-to-r from-cyber-purple to-cyber-pink bg-clip-text text-transparent">
+                        ⭐ What Streamers Are Saying
+                    </h2>
+                    <p class="text-gray-400 text-xl">
+                        Join thousands of satisfied streamers who've revolutionized their content.
+                    </p>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
+                    <!-- Testimonial 1 -->
+                    <div class="testimonial-card rounded-xl p-8">
+                        <div class="flex items-center mb-6">
+                            <div class="flex star-rating">
+                                <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                                <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                                <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                                <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                                <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                            </div>
+                        </div>
+                        <p class="text-gray-300 mb-6 italic text-lg leading-relaxed">
+                            "StreamMate AI completely revolutionized my streaming game! 🚀 Now I can focus entirely on playing while the AI handles my chat perfectly. My viewers absolutely love the instant responses and the engagement has skyrocketed!"
+                        </p>
+                        <div class="flex items-center">
+                            <div class="w-12 h-12 bg-gradient-to-br from-cyber-blue to-cyber-purple rounded-full flex items-center justify-center"><span class="text-white font-bold text-lg">GX</span></div>
+                            <div class="ml-4">
+                                <p class="text-gray-100 font-semibold text-lg">GameXpert92</p>
+                                <p class="text-gray-400 text-sm">🎮 YouTube Gaming • 50K+ Subscribers</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Testimonial 2 -->
+                    <div class="testimonial-card rounded-xl p-8">
+                        <div class="flex items-center mb-6">
+                            <div class="flex star-rating">
+                               <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                               <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                               <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                               <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                               <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                            </div>
+                        </div>
+                        <p class="text-gray-300 mb-6 italic text-lg leading-relaxed">
+                            "The viewer memory feature is absolutely incredible! 🧠 My regular viewers feel so special when the AI remembers their names. Community engagement is through the roof and retention has improved 300%!"
+                        </p>
+                        <div class="flex items-center">
+                            <div class="w-12 h-12 bg-gradient-to-br from-cyber-purple to-cyber-pink rounded-full flex items-center justify-center"><span class="text-white font-bold text-lg">SM</span></div>
+                            <div class="ml-4">
+                                <p class="text-gray-100 font-semibold text-lg">StreamMaster_TT</p>
+                                <p class="text-gray-400 text-sm">📱 TikTok Live • 100K+ Followers</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Testimonial 3 -->
+                    <div class="testimonial-card rounded-xl p-8">
+                        <div class="flex items-center mb-6">
+                            <div class="flex star-rating">
+                                <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                                <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                                <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                                <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                                <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                            </div>
+                        </div>
+                        <p class="text-gray-300 mb-6 italic text-lg leading-relaxed">
+                            "As a live seller, this tool is a must-have. It answers product questions instantly, allowing me to focus on showcasing items. Sales have increased, and my customers are happier than ever. A true game-changer!"
+                        </p>
+                        <div class="flex items-center">
+                            <div class="w-12 h-12 bg-gradient-to-br from-cyber-pink to-cyber-orange rounded-full flex items-center justify-center"><span class="text-white font-bold text-lg">LC</span></div>
+                            <div class="ml-4">
+                                <p class="text-gray-100 font-semibold text-lg">LiveCommerceQueen</p>
+                                <p class="text-gray-400 text-sm">🛍️ Live Seller • 25K+ Viewers</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Future Updates Section -->
+        <section class="py-24 relative bg-cyber-dark/50">
+            <div class="container mx-auto px-4">
+                <div class="text-center mb-16">
+                    <h2 class="text-4xl md:text-5xl font-bold text-gray-100 mb-4 bg-gradient-to-r from-cyber-green to-cyber-blue bg-clip-text text-transparent">
+                        🔮 The Future is Evolving
+                    </h2>
+                    <p class="text-gray-400 text-xl max-w-3xl mx-auto">
+                        We are constantly innovating. Get ready for the upcoming <span class="text-cyber-green font-bold">PRO</span> features designed to take your stream to the next dimension.
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 max-w-7xl mx-auto">
+                    <!-- Future Feature 1: Natural Voice -->
+                    <div class="cyber-card rounded-xl p-8 text-center hover:border-cyber-green/50">
+                        <h3 class="text-2xl font-bold text-gray-100 mb-4">Human-like Voice</h3>
+                        <p class="text-gray-400">An ultra-realistic voice for your AI co-host that's indistinguishable from a human, creating truly natural interactions.</p>
+                        <span class="inline-block mt-4 text-cyber-green font-bold text-sm py-1 px-3 border border-cyber-green/50 rounded-full">COMING SOON</span>
+                    </div>
+                    <!-- Future Feature 2: Character Animation -->
+                    <div class="cyber-card rounded-xl p-8 text-center hover:border-cyber-blue/50">
+                        <h3 class="text-2xl font-bold text-gray-100 mb-4">Animated Avatars</h3>
+                        <p class="text-gray-400">Bring your AI to life with customizable, animated characters that react to your stream and chat in real-time.</p>
+                        <span class="inline-block mt-4 text-cyber-blue font-bold text-sm py-1 px-3 border border-cyber-blue/50 rounded-full">IN DEVELOPMENT</span>
+                    </div>
+                    <!-- Future Feature 3: AI Knowledge -->
+                    <div class="cyber-card rounded-xl p-8 text-center hover:border-cyber-purple/50">
+                        <h3 class="text-2xl font-bold text-gray-100 mb-4">Custom Knowledge Base</h3>
+                        <p class="text-gray-400">Train your AI with specific information about your channel, games, or products for hyper-relevant responses.</p>
+                        <span class="inline-block mt-4 text-cyber-purple font-bold text-sm py-1 px-3 border border-cyber-purple/50 rounded-full">PLANNED</span>
+                    </div>
+                    <!-- Future Feature 4: Seller Tools -->
+                    <div class="cyber-card rounded-xl p-8 text-center hover:border-cyber-pink/50">
+                        <h3 class="text-2xl font-bold text-gray-100 mb-4">Live Seller Suite</h3>
+                        <p class="text-gray-400">Advanced tools for live commerce, including inventory tracking, automated checkout links, and sales analytics.</p>
+                        <span class="inline-block mt-4 text-cyber-pink font-bold text-sm py-1 px-3 border border-cyber-pink/50 rounded-full">PLANNED</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Final CTA Section -->
+        <section class="py-24">
+            <div class="container mx-auto px-4 text-center">
+                 <h2 class="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-cyber-blue via-cyber-purple to-cyber-pink bg-clip-text text-transparent cyber-text-glow">
+                    Ready to Transform Your Stream?
+                </h2>
+                <p class="text-xl text-gray-300 max-w-3xl mx-auto mb-12">
+                    Download StreamMate AI now and unlock the ultimate streaming experience. It's free, powerful, and ready to go.
+                </p>
+                <a 
+                    href="https://github.com/arulbarker/streammatepagedanrelease/releases/download/v1.0.11/StreamMateAI_v1.0.11_20250625.zip"
+                    class="inline-block group"
+                >
+                    <button class="cyber-button text-xl px-10 py-6 text-gray-900 font-bold rounded-lg border-0 hover:scale-105 transition-all duration-300">
+                        🚀 Get Started for Free
+                    </button>
+                </a>
+            </div>
+        </section>
+
+    </main>
 
     <!-- Footer -->
-    <footer class="border-t border-gray-700/50 py-8 bg-gray-900/80 backdrop-blur-sm">
-        <div class="container mx-auto px-4 text-center">
-            <p class="text-gray-400">
-                © 2025 StreamMate AI. Dibuat oleh ArulCG.
-            </p>
+    <footer class="bg-cyber-dark/80 border-t border-gray-700/50 py-8">
+        <div class="container mx-auto px-4 text-center text-gray-500">
+            <p>&copy; 2025 StreamMate AI. All rights reserved.</p>
+            <p class="text-sm mt-2">The future of interactive streaming, built for creators.</p>
         </div>
     </footer>
+
 </body>
 </html>
